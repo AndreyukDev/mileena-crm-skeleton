@@ -1,0 +1,16 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.main-content {
+    padding: 2rem 0;
+}
+
+.navbar {
+    margin-bottom: 2rem;
+}
+
+.item-qty {
+    text-align: right;
+    width: 4rem;
+}

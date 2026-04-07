@@ -1,0 +1,80 @@
+<?php
+
+include $this->templateDir . "/_header.phtml";
+
+// Определяем, является ли операция редактированием или добавлением
+$isEdit = isset($user) && $user->id;
+
+// Устанавливаем заголовок и действие формы
+$formTitle = $isEdit ? "Редактирование менеджера" : "Создание нового менеджера";
+$formAction = "/manager/save";
+
+// Получаем значения для полей формы
+$userId = $user->id ?? null;
+$username = $user->username ?? '';
+$fio = $user->fio ?? '';
+$status = $user->status ?? 'active'; // По умолчанию 'active' для новых пользователей
+
+?>
+<div class="container main-content">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="mb-0"><?= htmlspecialchars($formTitle) ?></h3>
+        </div>
+        <div class="card-body">
+            <form action="<?= $formAction ?>" method="post" autocomplete="off">
+                <?php
+                if ($isEdit): ?>
+                    <input type="hidden" name="id" value="<?= htmlspecialchars((string)$userId) ?>">
+                <?php
+                endif; ?>
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Имя (логин)</label>
+                    <input type="text" class="form-control" id="username" name="username"
+                           value="<?= htmlspecialchars($username) ?>" required <?= $isEdit ? 'disabled' : '' ?>>
+                </div>
+
+                <div class="mb-3">
+                    <label for="fio" class="form-label">ФИО</label>
+                    <input type="text" class="form-control" id="fio" name="fio" value="<?= htmlspecialchars($fio) ?>"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Пароль</label>
+                    <input type="password" class="form-control" id="password"
+                           name="password" <?= !$isEdit ? 'required' : '' ?>>
+                    <?php
+                    if ($isEdit): ?>
+                        <div class="form-text">Оставьте поле пустым, чтобы не менять текущий пароль.</div>
+                    <?php
+                    endif; ?>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password_confirm" class="form-label">Подтверждение пароля</label>
+                    <input type="password" class="form-control" id="password_confirm"
+                           name="password_confirm" <?= !$isEdit ? 'required' : '' ?>>
+                </div>
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Статус</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="1" <?= $status == 1 ? 'selected' : '' ?>>Активен</option>
+                        <option value="0" <?= $status == 0 ? 'selected' : '' ?>>Заблокирован</option>
+                    </select>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-end">
+                    <a href="/manager" class="btn btn-secondary me-2">Отмена</a>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php
+include $this->templateDir . "/_footer.phtml"; ?>

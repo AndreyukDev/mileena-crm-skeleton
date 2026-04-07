@@ -1,0 +1,30 @@
+# use composer install
+/vendor/
+composer.lock
+
+# tmp
+/var/cache/*
+/var/logs/*
+.phpunit.result.cache
+phpstan-cache/
+# .gitkeep
+!/var/cache/.gitkeep
+!/var/logs/.gitkeep
+
+# Docker
+.docker/data/
+
+# secrets
+.env
+.env.local
+src/.env
+
+# IDE (PhpStorm, VS Code)
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# sys files
+.DS_Store
+thumbs.db

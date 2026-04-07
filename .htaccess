@@ -1,0 +1,40 @@
+# calc_admin htaccess
+AddDefaultCharset UTF-8
+DirectoryIndex index.php
+
+php_value session.cookie_lifetime 604800
+php_value session.gc_maxlifetime 604800
+
+<FilesMatch ".(js|css)$">
+  Header unset Cache-Control
+</FilesMatch>
+
+#
+RewriteEngine   on
+
+Options +FollowSymLinks
+
+#RewriteCond %{HTTP_HOST} ^poolstroi.ru$
+#RewriteRule (.*) http://www.poolstroi.ru/$1 [R=301,L]
+
+
+
+RewriteBase /
+RewriteCond %{REQUEST_URI} \..+$
+RewriteCond %{REQUEST_URI} !\.html$
+RewriteRule .* - [L]
+
+#RewriteCond %{REMOTE_ADDR} !^178\.187\.84\.57
+#RewriteCond %{REQUEST_URI} !^/maintenance\.php$
+#RewriteRule ^(.*)$ /maintenance.php [R=307,L]
+
+#
+#
+#
+RewriteRule ^(.+?)/(.+?)/$ /index.php?controller=$1&controller_method=$2&%{QUERY_STRING} [L]
+RewriteRule ^(.+?)/(.+)$ /index.php?controller=$1&controller_method=$2&%{QUERY_STRING} [L]
+#
+#
+#
+#
+RewriteRule ^.*$ /index.php [L]

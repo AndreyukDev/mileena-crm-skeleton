@@ -1,0 +1,38 @@
+<?php
+
+include $this->templateDir . "/_header.phtml" ?>
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        
+        <?php if (isset($error) && $error): ?>
+            <div class="alert alert-danger" role="alert">
+                <?= htmlspecialchars($error) ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Вход в систему</h3>
+                <form action="/manager/login" method="post">
+                    <div class="mb-3">
+                        <label for="login" class="form-label">Логин</label>
+                        <input type="text" class="form-control" id="login" name="login"
+                               placeholder="Введите ваш логин" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Пароль</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                               placeholder="Введите ваш пароль" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Войти</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+include $this->templateDir . "/_footer.phtml" ?>
