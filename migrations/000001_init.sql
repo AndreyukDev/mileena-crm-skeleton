@@ -12,22 +12,16 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin_users` (
-                               `id` int UNSIGNED NOT NULL,
+                               `id` int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                `username` varchar(255) NOT NULL,
                                `fio` varchar(255) NOT NULL DEFAULT '',
                                `password` varchar(255) NOT NULL,
                                `status` tinyint UNSIGNED NOT NULL DEFAULT '0',
                                `created_at` datetime NOT NULL,
                                `latest_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
---
--- AUTO_INCREMENT `admin_users`
---
-ALTER TABLE `admin_users`
-    MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

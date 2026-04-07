@@ -16,6 +16,6 @@ define('ROOT_DIR', getcwd() . '/');
 // авто загрузчики
 require 'vendor/autoload.php';
 
-$config = new Mileena\Config(__DIR__.'/ыкс/');
+$config = new Mileena\Config(__DIR__.'/src/');
 $app = new App($config);
 $app->webRoute();
