@@ -1,5 +1,9 @@
 <?php
 
+use BoxlandCrm\Model\Users\UserRole;
+use BoxlandCrm\Model\Users\UserStatus;
+use Mileena\Web\UserAuth;
+
 include $this->templateDir . "/_header.phtml";
 
 // Определяем, является ли операция редактированием или добавлением
@@ -7,13 +11,20 @@ $isEdit = isset($user) && $user->id;
 
 // Устанавливаем заголовок и действие формы
 $formTitle = $isEdit ? "Редактирование менеджера" : "Создание нового менеджера";
+$isMember = UserAuth::isMember() && $isEdit && $user->id !== UserAuth::getUserId();
+
+if ($isEdit && $isMember) {
+    $formTitle = "Профиль менеджера";
+}
+
 $formAction = "/manager/save";
 
 // Получаем значения для полей формы
 $userId = $user->id ?? null;
 $username = $user->username ?? '';
 $fio = $user->fio ?? '';
-$status = $user->status ?? 'active'; // По умолчанию 'active' для новых пользователей
+$status = $user?->status->value ?? UserStatus::Active->value;
+$role = $user?->role->value ?? UserRole::Member->value;
 
 ?>
 <div class="container main-content">
@@ -41,7 +52,7 @@ $status = $user->status ?? 'active'; // По умолчанию 'active' для 
                            required>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 <?= $isMember?'readonly-hide':'' ?>">
                     <label for="password" class="form-label">Пароль</label>
                     <input type="password" class="form-control" id="password"
                            name="password" <?= !$isEdit ? 'required' : '' ?>>
@@ -52,7 +63,7 @@ $status = $user->status ?? 'active'; // По умолчанию 'active' для 
                     endif; ?>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 <?= $isMember?'readonly-hide':'' ?>">
                     <label for="password_confirm" class="form-label">Подтверждение пароля</label>
                     <input type="password" class="form-control" id="password_confirm"
                            name="password_confirm" <?= !$isEdit ? 'required' : '' ?>>
@@ -61,14 +72,22 @@ $status = $user->status ?? 'active'; // По умолчанию 'active' для 
                 <div class="mb-3">
                     <label for="status" class="form-label">Статус</label>
                     <select class="form-select" id="status" name="status">
-                        <option value="1" <?= $status == 1 ? 'selected' : '' ?>>Активен</option>
-                        <option value="0" <?= $status == 0 ? 'selected' : '' ?>>Заблокирован</option>
+                        <option value="<?= UserStatus::Active->value ?>" <?= $status == UserStatus::Active->value ? 'selected' : '' ?>>Активен</option>
+                        <option value="<?= UserStatus::Blocked->value ?>" <?= $status == UserStatus::Blocked->value ? 'selected' : '' ?>>Заблокирован</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Группа</label>
+                    <select class="form-select" id="role" name="role">
+                        <option value="<?= UserRole::Administrator->value ?>" <?= $role == UserRole::Administrator->value ? 'selected' : '' ?>>Администратор</option>
+                        <option value="<?= UserRole::Member->value ?>" <?= $role == UserRole::Member->value ? 'selected' : '' ?>>Участник</option>
                     </select>
                 </div>
 
                 <hr>
 
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-end <?= $isMember?'readonly-hide':'' ?>">
                     <a href="/manager" class="btn btn-secondary me-2">Отмена</a>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>
@@ -76,5 +95,12 @@ $status = $user->status ?? 'active'; // По умолчанию 'active' для 
         </div>
     </div>
 </div>
+
+<?php if ($isMember) :?>
+<script>
+    $('input, select').attr('disabled', 'disabled');
+</script>
+<?php endif; ?>
+
 <?php
 include $this->templateDir . "/_footer.phtml"; ?>

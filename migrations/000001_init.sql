@@ -1,28 +1,17 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+-- 1. users
+CREATE TABLE admin_users (
+                             id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                             username VARCHAR(255) NOT NULL,
+                             fio VARCHAR(255) NOT NULL DEFAULT '',
+                             password VARCHAR(255) NOT NULL,
+                             status ENUM('active', 'blocked') NOT NULL DEFAULT 'active',
+                             role ENUM('administrator', 'member') NOT NULL DEFAULT 'member',
+                             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                             updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                             latest_at DATETIME DEFAULT NULL,
+                             deleted_at DATETIME DEFAULT NULL,
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Schema `admin_users`
---
-
-CREATE TABLE `admin_users` (
-                               `id` int UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                               `username` varchar(255) NOT NULL,
-                               `fio` varchar(255) NOT NULL DEFAULT '',
-                               `password` varchar(255) NOT NULL,
-                               `status` tinyint UNSIGNED NOT NULL DEFAULT '0',
-                               `created_at` datetime NOT NULL,
-                               `latest_at` datetime NOT NULL
+                             INDEX idx_username (username),
+                             INDEX idx_status (status),
+                             INDEX idx_deleted_at (deleted_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
